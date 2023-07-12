@@ -347,63 +347,63 @@ app.post("/profiledelete", async (req, res) => {
     });
   }
 });
-// app.post("/otpverify", (req, res) => {
-//   var email = req.body.email;
-//   var otp = req.body.otp;
-//   const db = req.app.locals.db;
-//   const collection = db.collection("otp");
-//   const collection2 = db.collection("user");
-//   var uid = uuidv4();
-//   collection
-//     .find({ email: email, otp: otp })
-//     .limit(1)
-//     .sort({ _id: -1 })
-//     .toArray(function (err, result) {
-//       if (err) {
-//         console.log(err);
-//       } else if (result.length) {
-//         var name = String(result[0]["name"]);
+app.post("/otpverify", (req, res) => {
+  var email = req.body.email;
+  var otp = req.body.otp;
+  const db = req.app.locals.db;
+  const collection = db.collection("otp");
+  const collection2 = db.collection("user");
+  var uid = uuidv4();
+  collection
+    .find({ email: email, otp: otp })
+    .limit(1)
+    .sort({ _id: -1 })
+    .toArray(function (err, result) {
+      if (err) {
+        console.log(err);
+      } else if (result.length) {
+        var name = String(result[0]["name"]);
 
-//         collection2
-//           .find({ email: email })
-//           .limit(1)
-//           .sort({ _id: -1 })
-//           .toArray(function (err, result2) {
-//             if (err) {
-//               console.log(err);
-//             } else if (result2.length) {
-//               ////////update otp start//////////
-//               collection2.updateOne(
-//                 { email: email }, // query
-//                 { $set: { akey: "" + uid + "" } }, // replacement, replaces only the field "hi"
-//                 {}, // options
-//                 function (err, object) {}
-//               );
-//               ///////update otp close///////////
-//               console.log("Update work");
-//             } else {
-//               var data2 = { name: name, email: email, akey: uid };
-//               collection2.insert(data2, { w: 1 }, function (err, result) {
-//                 if (err) {
-//                   res.end("Registration Error1");
-//                   console.warn(err.message); // returns error if no matching object found
-//                 } else {
-//                 }
-//               });
-//             }
-//           });
+        collection2
+          .find({ email: email })
+          .limit(1)
+          .sort({ _id: -1 })
+          .toArray(function (err, result2) {
+            if (err) {
+              console.log(err);
+            } else if (result2.length) {
+              ////////update otp start//////////
+              collection2.updateOne(
+                { email: email }, // query
+                { $set: { akey: "" + uid + "" } }, // replacement, replaces only the field "hi"
+                {}, // options
+                function (err, object) {}
+              );
+              ///////update otp close///////////
+              console.log("Update work");
+            } else {
+              var data2 = { name: name, email: email, akey: uid };
+              collection2.insert(data2, { w: 1 }, function (err, result) {
+                if (err) {
+                  res.end("Registration Error1");
+                  console.warn(err.message); // returns error if no matching object found
+                } else {
+                }
+              });
+            }
+          });
 
-//         res.json({
-//           email: email,
-//           otpverify: true,
-//           msg: "login sucessfull",
-//           akey: uid,
-//         });
-//       } else {
-//         res.json({ email: email, otpverify: false, msg: "login failed" });
-//       }
-//     });
-// });
+        res.json({
+          email: email,
+          otpverify: true,
+          msg: "login sucessfull",
+          akey: uid,
+        });
+      } else {
+        res.json({ email: email, otpverify: false, msg: "login failed" });
+      }
+    });
+});
 
 // app.get("/productlist", (req, res) => {
 //   res.json({ result: true, msg: "product list" });
